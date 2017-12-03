@@ -30,11 +30,8 @@ sensor_templates[sensors[1]] = oil_template
 
 #POSTs the reading to the web service
 def publishReadings(selection):
-  print("selected ~> "+str(sensors[selection%2]))
   reading = getReading(sensors[selection%2])
-  #reading['device_id'] = (selection/2) + 1
-  reading['device_id'] = 'test_device' #testing device id so I don't clutter an account
-  #print(reading)
+  reading['device_id'] = (selection/2) + 1
   postToWebService(reading)
   time.sleep(0.5)
 
@@ -46,12 +43,12 @@ def getReading(sensor):
 
 #Generates a random value around the range for the sensor reading
 def generateValue(min, max):
-  return round(random.uniform(min, max), 2)
+  return round(random.uniform(min-3, max+1), 2)
 
 def postToWebService(reading):
   r = requests.post(post_url, data=reading)
-  print(json.loads(r.content))
-  print(r.status_code)
+  print("content ~> " + str(json.loads(r.content)))
+  print("status ~> " + str(r.status_code))
 
 curr_selection = -1
 
